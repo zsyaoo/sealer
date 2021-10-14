@@ -21,8 +21,9 @@ import (
 )
 
 const (
-	PhasePre  = "Pre"
-	PhasePost = "Post"
+	PhasePre       = "Pre"
+	PhasePost      = "Post"
+	PhaseLiteBuild = "LiteBuild"
 )
 
 // Define checkers when pre or post install, like checker node status, checker pod status...
@@ -31,7 +32,7 @@ type Interface interface {
 }
 
 func RunCheckList(cluster *v1.Cluster, phase string) error {
-	list := []Interface{NewNodeChecker(), NewSvcChecker(), NewPodChecker()}
+	list := []Interface{NewNodeChecker(), NewSvcChecker(), NewPodChecker(), NewNativeDockerChecker()}
 
 	for _, l := range list {
 		if err := l.Check(cluster, phase); err != nil {

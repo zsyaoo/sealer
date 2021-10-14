@@ -16,6 +16,7 @@ package lite
 
 import (
 	"fmt"
+	"github.com/alibaba/sealer/checker"
 	"os"
 	"path/filepath"
 	"time"
@@ -94,6 +95,11 @@ func (l *Builder) PreCheck() error {
 	images, _ := l.DockerClient.ImagesList()
 	if len(images) > 0 {
 		logger.Warn("The image already exists on the host. Note that the existing image cannot be cached in registry")
+	}
+	containerChecker := checker.NewNativeDockerChecker()
+	err := containerChecker.Check(nil, checker.PhaseLiteBuild)
+	if err != nil {
+		return err
 	}
 	return nil
 }
