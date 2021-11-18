@@ -74,6 +74,7 @@ func (c NativeDockerChecker) Check(cluster *v1.Cluster, phase string) error {
 		}
 		v, err := cli.ServerVersion(ctx)
 		if err != nil {
+			logger.Info("this host is not install docker", err)
 			return nil
 		}
 		c.SealerContainer = strings.HasSuffix(v.Version, SealerVersionTag)
